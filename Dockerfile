@@ -1,15 +1,19 @@
 FROM python:3.6-alpine3.6
-LABEL maintainer="Luke Childs <lukechilds123@gmail.com>"
+LABEL maintainer="Randy Du <randydu@gmail.com>"
 
 COPY ./bin /usr/local/bin
-COPY ./VERSION /tmp
 
-RUN VERSION=$(cat /tmp/VERSION) && \
-    chmod a+x /usr/local/bin/* && \
+ARG BUILD_VERSION=r2.0
+ENV VERSION=$BUILD_VERSION
+
+ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
+ENV REPO_URL=$BUILD_REPO_URL
+
+RUN chmod a+x /usr/local/bin/* && \
     apk add --no-cache git build-base openssl && \
     apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
     pip install aiohttp pylru plyvel && \
-    git clone -b $VERSION https://github.com/randydu/electrumx.git && \
+    git clone -b $VERSION $REPO_URL && \
     cd electrumx && \
     python setup.py install && \
     apk del git build-base && \
