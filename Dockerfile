@@ -3,7 +3,7 @@ LABEL maintainer="Randy Du <randydu@gmail.com>"
 
 COPY ./bin /usr/local/bin
 
-ARG BUILD_VERSION=r2.1.0
+ARG BUILD_VERSION=r2.1.1
 ENV VERSION=$BUILD_VERSION
 
 ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
@@ -12,7 +12,7 @@ ENV REPO_URL=$BUILD_REPO_URL
 RUN chmod a+x /usr/local/bin/* && \
     apk add --no-cache git build-base openssl && \
     apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
-    pip install aiohttp pylru plyvel && \
+    pip install aiohttp aiorpcX==0.5.6 pylru plyvel && \
     git clone -b $VERSION $REPO_URL && \
     cd electrumx && \
     python setup.py install && \
