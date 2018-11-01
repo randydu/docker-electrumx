@@ -3,7 +3,7 @@ LABEL maintainer="Randy Du <randydu@gmail.com>"
 
 COPY ./bin /usr/local/bin
 
-ARG BUILD_VERSION=r2.1.1
+ARG BUILD_VERSION=r2.1.2
 ENV VERSION=$BUILD_VERSION
 
 ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
@@ -15,6 +15,10 @@ RUN chmod a+x /usr/local/bin/* && \
     pip install aiohttp aiorpcX==0.5.6 pylru plyvel && \
     git clone -b $VERSION $REPO_URL && \
     cd electrumx && \
+    python setup.py install && \
+    cd .. && \
+    git clone https://github.com/brian112358/x16r_hash.git && \
+    cd x16r_hash && \
     python setup.py install && \
     apk del git build-base && \
     rm -rf /tmp/*

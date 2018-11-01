@@ -3,23 +3,18 @@ LABEL maintainer="Randy Du <randydu@gmail.com>"
 
 COPY ./bin /usr/local/bin
 
-ARG BUILD_VERSION=r2.1.2
+ARG BUILD_VERSION=r2.1.1
 ENV VERSION=$BUILD_VERSION
 
 ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
 ENV REPO_URL=$BUILD_REPO_URL
 
-COPY ./repo /electrumx
-
 RUN chmod a+x /usr/local/bin/* && \
     apk add --no-cache git build-base openssl && \
     apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
-    pip install aiohttp aiorpcX==0.5.6 pylru plyvel && \
+    pip install aiohttp aiorpcX pylru plyvel && \
+    git clone -b $VERSION $REPO_URL && \
     cd electrumx && \
-    python setup.py install && \
-    cd .. && \
-    git clone https://github.com/brian112358/x16r_hash.git && \
-    cd x16r_hash && \
     python setup.py install && \
     apk del git build-base && \
     rm -rf /tmp/*
@@ -28,7 +23,6 @@ VOLUME ["/data"]
 ENV HOME /data
 ENV ALLOW_ROOT 1
 ENV DB_DIRECTORY /data
-ENV RPC_PORT=8088
 ENV TCP_PORT=50001
 ENV SSL_PORT=50002
 ENV SSL_CERTFILE ${DB_DIRECTORY}/electrumx.crt
@@ -36,7 +30,6 @@ ENV SSL_KEYFILE ${DB_DIRECTORY}/electrumx.key
 ENV HOST ""
 WORKDIR /data
 
-EXPOSE 8088
 EXPOSE 50001 50002
 
 CMD ["init"]
