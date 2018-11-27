@@ -1,5 +1,5 @@
 FROM python:3.6-alpine3.6
-LABEL maintainer="Randy Du <randydu@gmail.com>"
+LABEL maintainer="Randy Du <randyd@yummy.net>"
 
 COPY ./bin /usr/local/bin
 
