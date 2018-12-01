@@ -1,25 +1,18 @@
 FROM python:3.7.1-alpine3.8
-LABEL maintainer="Randy Du <randyd@yummy.net>"
+LABEL maintainer="Randy Du <randydu@gmail.com>"
 
 COPY ./bin /usr/local/bin
 
-ARG BUILD_VERSION=1.8.12
-ENV VERSION=$BUILD_VERSION
-
-#ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
-ARG BUILD_REPO_URL=https://github.com/kyuupichan/electrumx.git
-ENV REPO_URL=$BUILD_REPO_URL
+COPY ./repo /electrumx
 
 RUN chmod a+x /usr/local/bin/* && \
     apk add --no-cache git build-base openssl && \
     apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
     pip install aiohttp aiorpcX==0.10.1 pylru plyvel && \
-    git clone -b ${VERSION} $REPO_URL && \
     cd electrumx && \
     python setup.py install && \
     apk del git build-base && \
     rm -rf /tmp/*
-
 
 VOLUME ["/data"]
 ENV HOME /data

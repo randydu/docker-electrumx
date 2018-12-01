@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rsync -avr --exclude .git  ../new/ ./repo/
+
+docker build -t docker.yummy.net/tcoin-idx:v2.1n --file ./Dockerfile.local.new .
