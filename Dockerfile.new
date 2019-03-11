@@ -1,9 +1,9 @@
-FROM python:3.7.1-alpine3.8
+FROM python:3.7.2-alpine3.9
 LABEL maintainer="Randy Du <randyd@yummy.net>"
 
 COPY ./bin /usr/local/bin
 
-ARG BUILD_VERSION=1.8.12
+ARG BUILD_VERSION=1.9.5
 ENV VERSION=$BUILD_VERSION
 
 #ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
