@@ -1,9 +1,9 @@
-FROM python:3.7.2-alpine3.9
+FROM python:3.7.6-alpine3.11
 LABEL maintainer="Randy Du <randyd@yummy.net>"
 
 COPY ./bin /usr/local/bin
 
-ARG BUILD_VERSION=1.9.5
+ARG BUILD_VERSION=1.14.0
 ENV VERSION=$BUILD_VERSION
 
 #ARG BUILD_REPO_URL=https://github.com/randydu/electrumx.git
@@ -13,7 +13,7 @@ ENV REPO_URL=$BUILD_REPO_URL
 RUN chmod a+x /usr/local/bin/* && \
     apk add --no-cache git build-base openssl && \
     apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
-    pip install aiohttp aiorpcX==0.10.5 pylru plyvel && \
+    pip install attrs aiohttp==3.3 aiorpcX==0.18.3 pylru plyvel && \
     git clone -b ${VERSION} $REPO_URL && \
     cd electrumx && \
     python setup.py install && \
@@ -28,8 +28,11 @@ ENV HOME /data
 # ENV ALLOW_ROOT 1
 
 ENV DB_DIRECTORY /data
-ENV TCP_PORT=50001
-ENV SSL_PORT=50002
+
+# deprecated since v2.3
+#ENV TCP_PORT=50001
+#ENV SSL_PORT=50002
+
 ENV SSL_CERTFILE ${DB_DIRECTORY}/electrumx.crt
 ENV SSL_KEYFILE ${DB_DIRECTORY}/electrumx.key
 ENV HOST ""

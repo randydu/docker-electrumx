@@ -1,4 +1,4 @@
 #!/bin/bash
 
 
-docker build -t docker.yummy.net/tcoin-idx:v2.2  --file ./Dockerfile.new .
+docker build -t docker.yummy.net/tcoin-idx:v2.3  --file ./Dockerfile.new .
